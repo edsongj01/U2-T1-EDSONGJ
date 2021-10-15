@@ -55,22 +55,21 @@ self.addEventListener('fetch',(event)=>{
         if (res){
             // respondemos con cache
             return res
-        }else{
+        }
             console.log("Mi recurso no está en caché",event.request.url);
             return fetch(event.request).then(resNet=>{
                 // Abro mi caché
                 caches.open(CACHE_DYNAMIC_NAME).then(cache=>{
                     // Guardo mi respuesta de la red en caché
                     cache.put(event.request,resNet).then(()=>{
-                        cleanCache(CACHE_DYNAMIC_NAME,5)
+                        cleanCache(CACHE_DYNAMIC_NAME,4)
                     })
                     
                 })
     
                 // Respondo con el response de la red
                 return resNet.clone();
-            });
-        }
+            })
     });
 
     event.respondWith(respuestaCa);
