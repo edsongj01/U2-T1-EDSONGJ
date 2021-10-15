@@ -39,7 +39,7 @@ self.addEventListener('install',(event)=>{
         return cacheInmutable.addAll([
             'https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css',
             'https://code.jquery.com/jquery-3.5.1.min.js',
-            'https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js'
+            'https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js',
         ]);
     });
 
@@ -55,23 +55,23 @@ self.addEventListener('fetch',(event)=>{
         if (res){
             // respondemos con cache
             return res
-        }
-
-        console.log("Mi recurso no está en caché",event.request.url);
-        return fetch(event.request).then(resNet=>{
-            // Abro mi caché
-            caches.open(CACHE_DYNAMIC_NAME).then(cache=>{
-                // Guardo mi respuesta de la red en caché
-                cache.put(event.request,resNet).then(()=>{
-                    cleanCache(CACHE_DYNAMIC_NAME,4)
+        }else{
+            console.log("Mi recurso no está en caché",event.request.url);
+            return fetch(event.request).then(resNet=>{
+                // Abro mi caché
+                caches.open(CACHE_DYNAMIC_NAME).then(cache=>{
+                    // Guardo mi respuesta de la red en caché
+                    cache.put(event.request,resNet).then(()=>{
+                        cleanCache(CACHE_DYNAMIC_NAME,5)
+                    })
+                    
                 })
-                
-            })
-
-            // Respondo con el response de la red
-            return resNet.clone();
-        })
-    })
+    
+                // Respondo con el response de la red
+                return resNet.clone();
+            });
+        }
+    });
 
     event.respondWith(respuestaCa);
 
