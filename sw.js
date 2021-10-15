@@ -31,7 +31,7 @@ self.addEventListener('install',(event)=>{
             'images/2.png',
             'images/3.png',
             'images/4.png',
-            'JS/app.js'
+            'JS/app.js',
         ]);
     });
 
@@ -40,6 +40,7 @@ self.addEventListener('install',(event)=>{
             'https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css',
             'https://code.jquery.com/jquery-3.5.1.min.js',
             'https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js',
+            'https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js',
         ]);
     });
 
@@ -55,7 +56,7 @@ self.addEventListener('fetch',(event)=>{
         if (res){
             // respondemos con cache
             return res
-        }
+        }else{
             console.log("Mi recurso no está en caché",event.request.url);
             return fetch(event.request).then(resNet=>{
                 // Abro mi caché
@@ -70,7 +71,8 @@ self.addEventListener('fetch',(event)=>{
                 // Respondo con el response de la red
                 return resNet.clone();
             })
-    });
+        }
+    })
 
     event.respondWith(respuestaCa);
 
